@@ -55,6 +55,8 @@ else
 fi
 #########################################################
 ####################FLAG TRIGGERS########################
+
+
 # Check for QEMU In The System Manufacturer (dmidecode)
 #if dmidecode -s system-manufacturer | grep -i 'qemu'; then
 #   qemu_found=true
@@ -70,7 +72,7 @@ if dmidecode --string chassis-asset-tag | grep -i 2590-0674-1028-0286-5967-9235-
 fi
 # Check for hyper-v  
 if dmesg | grep -i 'hyper-v' >/dev/null; then
-    azurehci_demesg_found=true
+    azure_demesg_found=true
 fi
 # Check 'dmidecode chassis asset tag' For Azure Cloud  
 if dmidecode --string chassis-asset-tag | grep -i 7783-7084-3265-9085-8269-3286-77 >/dev/null; then
@@ -90,9 +92,9 @@ if   [ "$qemu_found" = true ]; then
     print_info "Virtualization Client: Proxmox"
 elif [ "$vmware_dmesg_found" = true ]; then
     print_info "Virtualization Client: VMware"
-elif [ "$azurehci_assettag_found" = true ] && [ "$azurehci_demesg_found" = true ]; then
+elif [ "$azurehci_assettag_found" = true ] && [ "$azure_demesg_found" = true ]; then
 	print_info "Virtualization Client: Azure HCI"
-elif [ "$azurecloud_assettag_found" = true ]; then
+elif [ "$azurecloud_assettag_found" = true ] && [ "$$azure_demesg_found" = true ] ; then
     print_info "Virtualization Client: Azure Cloud"
 elif [ "$oraclecloud_assettag_found" = true ]; then
     print_info "Virtualization Client: Oracle Cloud"
@@ -108,16 +110,7 @@ if [ -f /etc/os-release ]; then
     print_info "Linux Distribution: $NAME"
     print_info "Version: $VERSION"
 else
-    print_info "Distribution information not found."
+    print_info "Distribution Information Not Found."
 fi
 #Gets Kernel Version 
- print_info "Kernel Version: $(uname -r)"
-#########################################################
-#####################Versioning##########################
-# 1.0 Identify Proxmox Clients 
-# 1.1 Identify VMware Clients 
-# 1.2 Identify Baremetal Clients
-# 1.3 Identify Azure HCI Clients 
-# 1.4 Identify Azure Cloud Clients
-# 1.5 Identify Oracle Cloud Clients
-# 1.6 Identify KVM Clients  
+ print_info "Kernel Version: $(uname -a)"
