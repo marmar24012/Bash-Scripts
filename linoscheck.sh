@@ -112,5 +112,7 @@ if [ -f /etc/os-release ]; then
 else
     print_info "Distribution Information Not Found."
 fi
-#Gets Kernel Version 
- print_info "Kernel Version: $(uname -a)"
+# Pull and display the kernel version
+kernel_version=$(uname -r)
+print_info "Kernel Version: $kernel_version"
+
